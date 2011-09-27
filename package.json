@@ -6,6 +6,7 @@
       "email": "nicotoutcourt@hotmail.com"
   },
   "dependencies": {
+    "connect": "1.7.1",
     "express": "2.4.6",
     "socket.io": "0.8.4",
     "jade": "0.16.0",
