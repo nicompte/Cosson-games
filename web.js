@@ -1,7 +1,11 @@
-var port = process.env.C9_PORT;
-var express = require("express");
-var stylus = require("stylus");
-var io = require("socket.io");
+var port = process.env.C9_PORT, 
+express = require("express"), 
+stylus = require("stylus"), 
+io = require("socket.io");
+
+//var deckModel = require("./models/Deck.js").Deck();
+
+//var deck = new deckModel(32);
 
 var app = express.createServer(), io = io.listen(app);
 
@@ -15,8 +19,12 @@ app.configure(function() {
   app.use (express.static(__dirname + '/public'));
 });
 
+app.get('/', function(req, res){
+    res.send('Vive Nico');
+});
+
 app.get('/belote/:template', function(req, res){
-    res.render(req.params.template+'/index', { title: 'My Site' });
+    res.render(req.params.template+'/index', { title: 'Cosson games' });
 });
 
 io.sockets.on('connection', function (socket) {
