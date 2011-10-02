@@ -1,5 +1,4 @@
-function Player(id, name){
-    this.id = id;
+function Player(name){
     this.name = name;
     this.hand = new Array();
 };

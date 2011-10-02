@@ -4,6 +4,7 @@ var Deck = require('./Deck2').Deck;
 var Belote = CardGame.extend({
     init: function(players){
         var deck = new Deck(32);
+        deck.shuffle();
         this._super(deck, players);
         this.teams = new Array();
         this.trick = new Array();
@@ -19,7 +20,7 @@ var Belote = CardGame.extend({
     distribute: function(schema, numberOfTimes, startsWith){
         this._super(schema, numberOfTimes, startsWith);
     },
-    startGame: function(){
+    newDeal: function(){
         this.distribute([3,2], 1, this.round%4);
     },
     play: function(playerId, card){

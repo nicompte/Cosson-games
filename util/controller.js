@@ -25,7 +25,7 @@ function bootController(app, file) {
                               }else {
                                 app.get(a.url, [auth.handle_authorized_request], fn);
                               }
-		  					console.log("initialized get " + a.url);
+		  					//console.log("initialized get " + a.url);
 		  					break;
 		  		case 'post':
 		  				if(!a.auth){
@@ -33,7 +33,7 @@ function bootController(app, file) {
                               }else {
                                 app.post(a.url,  [auth.handle_authorized_request], fn);
                               }
-    	  					console.log("initialized post " + a.url);
+    	  					//console.log("initialized post " + a.url);
 		  					break;
 		  		case 'put':
 		  				if(!a.auth){
@@ -41,7 +41,7 @@ function bootController(app, file) {
                               }else {
                                 app.put(a.url, [auth.handle_authorized_request], fn);
                               }
-    	  					console.log("initialized put " + a.url);
+    	  					//console.log("initialized put " + a.url);
 		  					break;
 		  		case 'delete':
 		  					if(!a.auth){
@@ -49,7 +49,7 @@ function bootController(app, file) {
                               }else {
                                 app.del(a.url, [auth.handle_authorized_request], fn);
                               }
-    	  					console.log("initialized del " + a.url);
+    	  					//console.log("initialized del " + a.url);
 		  					break;
 		  	}
 		  } else {
@@ -64,7 +64,7 @@ module.exports = {
     fs.readdir(__dirname + '/../controllers', function(err, files){
         if (err) throw err;
         files.forEach(function(file){
-            console.log("booting controller " + file);
+            //console.log("booting controller " + file);
             bootController(app, file);
         });
         app.get("/show_available_interfaces", function(req, res){
