@@ -5,7 +5,8 @@ io = require("socket.io"),
 connections = {};
 parseCookie = require('connect').utils.parseCookie,
 MemoryStore = express.session.MemoryStore,
-sessionStore = new MemoryStore();
+sessionStore = new MemoryStore()
+controller = require("./util/controller");;
 require('./models/inheritance.js');
 
 
@@ -16,12 +17,6 @@ for(var i = 0; i<3; i++){
     players.push(new Player(i, "player"+i));
 }
 this.belote = new Belote(players);
-console.log(this.belote);
-/*
-var Deck = require("./models/Deck2.js").Deck;
-var deck = new Deck(32);
-*/
-//console.log(deck);
 
 var app = express.createServer(), io = io.listen(app);
 
@@ -34,50 +29,16 @@ app.configure(function(){
   }));
   this.use(express.bodyParser());
   this.use(express.cookieParser());
-  //this.sessionStore = new express.session.MemoryStore({ reapInterval: 60000 * 10 });
   this.use(express.session({
       secret: "Cosson forever",
       key: "express.sid",
       store: sessionStore
   }));
+  app.use(express.logger({ format: ':method :url :status' }));
   this.use(express.static(__dirname + '/public'));
+  controller.bootControllers(app);
 });
 
-function requireLogin (req, res, next) {
-  if (req.session.username) {
-    next();
-  } else {
-    res.redirect("/login");
-  }
-}
-
-app.get('/secured', [requireLogin], function (req, res, next) {
-   res.send('Accès sécurisé');
-});
-
-app.get('/', function(req, res){
-    res.send('Vive Nico');
-});
-
-app.get('/belote/:template', [requireLogin], function(req, res){
-    res.render(req.params.template+'/index', { title: 'Cosson games' });
-});
-
-app.get('/login', function(req, res){
-    res.render('login', { title: 'Login' });
-});
-
-app.post('/login', function(req, res){
-    if(!req.body.username || !req.body.password){
-        res.render('login', { title: 'Login', error: 'Please enter login information' });
-    }else{
-        if(req.body.username == 'nbarbotte' && req.body.password == 'mdp'){
-            req.session.username = req.body.username;
-            res.redirect("/secured");
-            //res.render('stackoverflow/index', { title: 'Cosson games' });
-        }
-    }
-});
 /*
 io.of('/belote').on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
@@ -111,7 +72,7 @@ io.of('/belote').authorization(function(data, accept) {
     //accept(null, true);
 });
 
-io.sockets.on('connection', function (socket) {
+io.of('belote').on('connection', function (socket) {
     console.log('A socket with sessionID ' + socket.handshake.sessionID + ' and name ' + socket.handshake.session.username+' connected!');
 });
 /*
