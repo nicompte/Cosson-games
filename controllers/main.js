@@ -49,7 +49,6 @@ module.exports = {
             if(req.body.username == 'nbarbotte' && req.body.password == 'mdp'){
                 req.session.username = req.body.username;
                 res.redirect('/belote/stackoverflow', { title: 'Cosson games' });
-                //res.render('stackoverflow/index', { title: 'Cosson games' });
             }
         }
     }

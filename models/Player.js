@@ -1,6 +1,7 @@
-function Player(name){
+function Player(id, name){
+    this.id = id;
     this.name = name;
-    this.hand = new Array();
-};
+    this.hand = [];
+}
 
 exports.Player = Player;

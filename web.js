@@ -15,9 +15,9 @@ var Hash = require("./util/hash.js").Hash,
 Player = require("./models/Player.js").Player,
 Belote = require("./models/Belote2.js").Belote;
 
-var players = new Hash();
+var players = new Array();
 for(var i = 0; i<3; i++){
-    players[i] = new Player("player"+i)
+    players[i] = new Player(i, "player"+i);
 }
 
 app.configure(function(){
@@ -39,7 +39,7 @@ app.configure(function(){
     controller.bootControllers(app);
 });
 
-io.of('/belote').authorization(function(data, accept) {
+io.sockets.authorization(function(data, accept) {
     if (data.headers.cookie) {
         data.cookie = parseCookie(data.headers.cookie);
         if (!data.cookie['express.sid']) {
@@ -50,7 +50,7 @@ io.of('/belote').authorization(function(data, accept) {
             sessionStore.get(data.sessionID, function(err, session) {
                 if (!err && session && session.username) {
                     data.session = new Session(data, session);
-                    players[data.sessionID] = new Player(data.session.username);
+                    players.push(new Player(data.sessionID, data.session.username));
                     return accept(null, true);
                 } else {
                     return accept('Not logged in.', false);
@@ -62,14 +62,15 @@ io.of('/belote').authorization(function(data, accept) {
     }
 });
 
-io.of('belote').on('i_want_to_play', function (socket) {
+io.sockets.on('connection', function (socket) {
     console.info('A socket with sessionID ' + socket.handshake.sessionID + ' and name ' + socket.handshake.session.username+' connected!');
-    if(players.length() == 4){
+    if(players.length== 4){
         this.belote = new Belote(players);
         this.belote.newDeal();
-    }
-    io.of('belote').broadcast.emit('new_deal', players[socket.handshake.sessionID].hand);
-});
+        io.of('belote').broadcast.emit('new_deal', this.belote.getPlayerById(socket.handshake.sessionID).hand);
+        }
+    });
+   
 /*
 io.on('disconnect', function () {
     var userConnections = connections[sessionID];

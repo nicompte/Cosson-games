@@ -20,6 +20,13 @@ var Belote = CardGame.extend({
     distribute: function(schema, numberOfTimes, startsWith){
         this._super(schema, numberOfTimes, startsWith);
     },
+    getPlayerById: function(playerId){
+        players.foreach(function(player){
+            if(player.id == playerId){
+                return player;
+            }
+        });
+    },
     newDeal: function(){
         this.distribute([3,2], 1, this.round%4);
     },

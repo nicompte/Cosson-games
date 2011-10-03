@@ -6,15 +6,12 @@ var CardGame = Class.extend({
         this.players = players;
         this.round = 0;
     }, 
-    distribute: function(schema, numberOfTimes){
+    distribute: function(schema, numberOfTimes, startsWith){
        var deck = this.deck;
-        for(var i=0; i<numberOfTimes; i++){
-            for(var j = startsWith; j<this.players.length; j++){
-                this.players[j].hand.push(deck.takeCards(schema[i]));
-                if(j==players.length){
-                    j=0;
-                }
-            } 
+        for(var i=startsWith; i<numberOfTimes; i++){
+            this.players.forEach(function(player){
+                player.hand.push(deck.takeCards(schema[i]));
+            }); 
         }
     }
 });
