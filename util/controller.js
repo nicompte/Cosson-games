@@ -1,75 +1,68 @@
-var fs = require("fs");
-var auth = require("../util/authorized_controller");
-var mappingString = "";
-
-function add_to_mapping_string(method, url, description, auth) {
-    mappingString += "<div style='width: 400px; height: 20px; padding: 5px; background-color: #ccc; color: #000; font-family: Arial, Verdana, sans-serif'><b>" + method + " " + url + "</b></div><div style='width: 400px; padding: 5px; background-color: #eee; color: #000; font-family: Arial, Verdana, sans-serif'>" + description + "<br /><b>Auth:</b> " + auth + "</div><br />";
-}
-
-function bootController(app, file) {
-  var name = file.replace('.js', '');
-  var actions = require('../controllers/' + name);
-
-	var mapping = actions["mapping"];
-	
-  Object.keys(actions).map(function(action){
-	  var fn = actions[action];
-	  
-	  if(typeof(fn) === "function") {
-		  if(a = mapping[action]) {
-		  	add_to_mapping_string(a.method, a.url, a.description, a.auth);
-		  	switch(a.method) {
-		  		case 'get':
-		  					if(!a.auth){
-                                  app.get(a.url, fn);
-                              }else {
-                                app.get(a.url, [auth.handle_authorized_request], fn);
-                              }
-		  					//console.log("initialized get " + a.url);
-		  					break;
-		  		case 'post':
-		  				if(!a.auth){
-                                  app.post(a.url, fn);
-                              }else {
-                                app.post(a.url,  [auth.handle_authorized_request], fn);
-                              }
-    	  					//console.log("initialized post " + a.url);
-		  					break;
-		  		case 'put':
-		  				if(!a.auth){
-                                  app.put(a.url, fn);
-                              }else {
-                                app.put(a.url, [auth.handle_authorized_request], fn);
-                              }
-    	  					//console.log("initialized put " + a.url);
-		  					break;
-		  		case 'delete':
-		  					if(!a.auth){
-                                  app.del(a.url, fn);
-                              }else {
-                                app.del(a.url, [auth.handle_authorized_request], fn);
-                              }
-    	  					//console.log("initialized del " + a.url);
-		  					break;
-		  	}
-		  } else {
-		  	console.log("WARNING: no mapping for " + action + " defined");
-		  }
-	}
- });
-}
-
-module.exports = {
-	bootControllers : function(app) {
-    fs.readdir(__dirname + '/../controllers', function(err, files){
-        if (err) throw err;
-        files.forEach(function(file){
-            //console.log("booting controller " + file);
-            bootController(app, file);
-        });
-        app.get("/show_available_interfaces", function(req, res){
-        	res.send(mappingString);
-        });
+(function() {
+  var auth, bootController, fs, mappingString;
+  fs = require("fs");
+  auth = require("../util/authorized_controller");
+  mappingString = "";
+  bootController = function(app, file) {
+    var actions, mapping, name;
+    name = file.replace(".js", "");
+    actions = require("../controllers/" + name);
+    mapping = actions["mapping"];
+    Object.keys(actions).map(function(action) {
+      var a, fn;
+      fn = actions[action];
+      if (typeof fn === "function") {
+        if (a = mapping[action]) {
+          switch (a.method) {
+            case "get":
+              if (!a.auth) {
+                return app.get(a.url, fn);
+              } else {
+                return app.get(a.url, [auth.handle_authorized_request], fn);
+              }
+              break;
+            case "post":
+              if (!a.auth) {
+                return app.post(a.url, fn);
+              } else {
+                return app.post(a.url, [auth.handle_authorized_request], fn);
+              }
+              break;
+            case "put":
+              if (!a.auth) {
+                return app.put(a.url, fn);
+              } else {
+                return app.put(a.url, [auth.handle_authorized_request], fn);
+              }
+              break;
+            case "delete":
+              if (!a.auth) {
+                return app.del(a.url, fn);
+              } else {
+                return app.del(a.url, [auth.handle_authorized_request], fn);
+              }
+          }
+        } else {
+          return console.log("WARNING: no mapping for " + action + " defined");
+        }
+      }
     });
-	}
-}
+  };
+  module.exports = {
+    bootControllers: function(app) {
+      return fs.readdir(__dirname + "/../controllers", function(err, files) {
+        var file, _i, _len;
+        if (err) {
+          throw err;
+        }
+        for (_i = 0, _len = files.length; _i < _len; _i++) {
+          file = files[_i];
+          if (/.js$/.test(file)) {
+            bootController(app, file);
+            return;
+          }
+        }
+      });
+    }
+  };
+}).call(this);

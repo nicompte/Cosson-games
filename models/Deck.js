@@ -1,47 +1,50 @@
-var Card = require("./Card.js").Card;
-
-
-function Deck(numberOfCards) {
-    this.deck = new Array();
-    switch (numberOfCards) {
-    case 32:
-        for(var i =0; i<32; i++){
-            this.deck.push(new Card(i, Card.families['fr'][Math.floor(i/8)] , Card.values['fr'][(i%8)+5]));
-        }
-        break;
+(function() {
+  var Card, Deck;
+  Card = require("./Card.js").Card;
+  Deck = (function() {
+    function Deck(numberOfCards) {
+      var i;
+      this.deck = [];
+      switch (numberOfCards) {
+        case 32:
+          for (i = 0; i <= 31; i++) {
+            this.deck[i] = new Card(i, Card.families['fr'][Math.floor(i / 8)], Card.values['fr'][(i % 8) + 5]);
+          }
+          break;
+        case 52:
+          for (i = 0; i <= 51; i++) {
+            this.deck[i] = new Card(i, Card.families['fr'][Math.floor(i / 13)], Card.values['fr'][i % 13]);
+          }
+      }
     }
-}
-    
-/**
- * Shuffle the deck.
- */
-Deck.prototype.shuffle = function(){
-   var j = 0;
-   var valI = '';
-   var valJ = valI;
-   var l = this.deck.length - 1;
-   while(l > -1) {
+    Deck.prototype.shuffle = function() {
+      var j, l, valI, valJ, _ref;
+      j = 0;
+      valI = valJ = '';
+      l = 31;
+      while (l > -1) {
         j = Math.floor(Math.random() * l);
-        valI = this.deck[l];
-        valJ = this.deck[j];
-        this.deck[l] = valJ;
-        this.deck[j] = valI;
+        _ref = [this.deck[j], this.deck[l]], this.deck[l] = _ref[0], this.deck[j] = _ref[1];
         l = l - 1;
-    }
-};
-
-/**
- * Take a number of cards from the deck.
- */
-Deck.prototype.takeCards = function(numberOfCards){
-   return this.deck.splice(0, numberOfCards);
-};
-
-/**
- * Add cards to deck.
- */
-Deck.prototype.addCards = function(cards){
-   return this.deck.push(cards);
-};
-
-exports.Deck = Deck;
+      }
+    };
+    Deck.prototype.takeCards = function(numberOfCards) {
+      this.deck.splice(0, numberOfCards);
+    };
+    Deck.prototype.addCards = function(cards) {
+      this.deck.push(cards);
+    };
+    Deck.prototype.getCardById = function(id) {
+      var card, _i, _len, _ref;
+      _ref = this.deck;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        card = _ref[_i];
+        if (card.id === id) {
+          card;
+        }
+      }
+    };
+    return Deck;
+  })();
+  exports.Deck = Deck;
+}).call(this);
