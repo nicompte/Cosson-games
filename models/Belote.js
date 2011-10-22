@@ -16,9 +16,9 @@
       var deck;
       deck = new Deck(32);
       deck.shuffle();
-      Belote.__super__.constructor.apply(this, arguments);
-      this.teams = this.trick = [];
-      this.trump = this.trickTaker = null;
+      Belote.__super__.constructor.call(this, deck, players);
+      this.teams = [];
+      this.trump = this.trick = this.trickTaker = this.potentialTrick = null;
       this.cardValue = [5, 6, 7, 9, 10, 11, 8, 12];
       this.trickValue = [5, 6, 10, 11, 8, 12, 7, 9];
     }
@@ -30,17 +30,26 @@
       Belote.__super__.distribute.apply(this, arguments);
     };
     Belote.prototype.getPlayerById = function(playerId) {
-      var player, _i, _len, _ref, _results;
-      _ref = this.players;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        player = _ref[_i];
-        _results.push(player.id === playerId ? player : void 0);
-      }
-      return _results;
+      return Belote.__super__.getPlayerById.apply(this, arguments);
     };
     Belote.prototype.newDeal = function() {
       this.distribute([3, 2], 1, this.round % 4);
+    };
+    Belote.prototype.endDistribution = function() {
+      var currentPlayer, i;
+      currentPlayer = this.round;
+      for (i = 0; i <= 3; i++) {
+        if (this.players[i].id === this.trickTaker) {
+          this.players[currentPlayer].hand = this.players[currentPlayer].hand.concat(this.deck.takeCards(2));
+        } else {
+          this.players[currentPlayer].hand = this.players[currentPlayer].hand.concat(this.deck.takeCards(3));
+        }
+        if (currentPlayer === this.players.length) {
+          currentPlayer = 0;
+        } else {
+          currentPlayer++;
+        }
+      }
     };
     Belote.prototype.play = function(playerId, card) {
       var player;
@@ -49,30 +58,33 @@
       if (this.trump.length === 4) {
         return [true, this.getTrumpWinner()];
       } else {
-        return [false, WHO_HAS_TO_PLAY];
+        return [false, WHO_HAS_TO_];
       }
     };
     Belote.prototype.getTrumpWinner = function() {
-      var i, winningCard, _ref, _results;
+      var i, winningCard, _ref;
       winningCard = this.trump[0];
-      _results = [];
       for (i = 1, _ref = this.trum.length; 1 <= _ref ? i <= _ref : i >= _ref; 1 <= _ref ? i++ : i--) {
-        _results.push(!this.winsAgainst(this.trump[i - 1], this.trump[i]) ? winningCard = this.trump[i] : void 0);
+        if (!this.winsAgainst(this.trump[i - 1], this.trump[i])) {
+          winningCard = this.trump[i];
+        }
       }
-      return _results;
+      return winningCard;
     };
     Belote.prototype.isTrick = function(card) {
       return Card.families.getPosition(card.family) === this.trick;
     };
-    Belote.prototype.getPlayerById = function(playerId) {
-      var player, _i, _len, _ref, _results;
-      _ref = this.players;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        player = _ref[_i];
-        _results.push(player.id === player ? player : void 0);
+    Belote.prototype.getPotentialTrick = function() {
+      if (this.potentialTrick === null) {
+        return this.potentialTrick = this.deck.takeCards(1)[0];
+      } else {
+        return this.potentialTrick;
       }
-      return _results;
+    };
+    Belote.prototype.setTrick = function(trick, trickTaker) {
+      this.trick = trick;
+      this.trickTaker = trickTaker;
+      return this.endDistribution();
     };
     Belote.prototype.winsAgainst = function(card1, card2) {
       if (!this.isTrick(card1) && !this.isTrick(card2)) {

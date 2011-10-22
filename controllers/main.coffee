@@ -28,7 +28,7 @@ module.exports =
       "auth": false
 
   index: (req, res) ->
-    res.send 'Cosson games'
+    res.send 'Cosson games\' main page'
     return
     
   secured: (req, res) ->
@@ -42,8 +42,7 @@ module.exports =
   login_process: (req, res)  ->
     if !req.body.username || !req.body.password
       res.render 'login',  title: 'Login', error: 'Please enter login information'
-      return
-    else if req.body.username == 'nbarbotte' && req.body.password == 'mdp'
+    else if req.body.password == 'mdp'
         req.session.username = req.body.username
-        res.redirect('/belote/stackoverflow',  title: 'Cosson games' )
-        return
+        res.redirect('/belote/stackoverflow')
+     return

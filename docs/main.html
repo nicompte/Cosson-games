@@ -1,0 +1,50 @@
+<!DOCTYPE html>  <html> <head>   <title>main.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="belote.html">                 belote.coffee               </a>                                           <a class="source" href="main.html">                 main.coffee               </a>                                           <a class="source" href="Belote.html">                 Belote.coffee               </a>                                           <a class="source" href="Card.html">                 Card.coffee               </a>                                           <a class="source" href="CardGame.html">                 CardGame.coffee               </a>                                           <a class="source" href="Deck.html">                 Deck.coffee               </a>                                           <a class="source" href="Player.html">                 Player.coffee               </a>                                           <a class="source" href="authorized_controller.html">                 authorized_controller.coffee               </a>                                           <a class="source" href="controller.html">                 controller.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               main.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">util = </span><span class="nx">require</span> <span class="s2">&quot;util&quot;</span>
+<span class="nv">auth = </span><span class="nx">require</span> <span class="s2">&quot;../util/authorized_controller&quot;</span>
+
+<span class="nv">module.exports =</span>
+  <span class="nv">mapping: </span>
+    <span class="s2">&quot;index&quot;</span><span class="o">:</span> 
+      <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span>
+      <span class="s2">&quot;method&quot;</span><span class="o">:</span> <span class="s2">&quot;get&quot;</span>
+      <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Cosson games main page&quot;</span>
+      <span class="s2">&quot;auth&quot;</span><span class="o">:</span> <span class="kc">false</span>
+		
+    <span class="s2">&quot;secured&quot;</span><span class="o">:</span> 
+      <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;/secured&quot;</span>
+      <span class="s2">&quot;method&quot;</span><span class="o">:</span> <span class="s2">&quot;get&quot;</span>
+      <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Secured page&quot;</span>
+      <span class="s2">&quot;auth&quot;</span><span class="o">:</span> <span class="kc">true</span>
+
+    <span class="s2">&quot;login&quot;</span><span class="o">:</span> 
+      <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;/login&quot;</span>
+      <span class="s2">&quot;method&quot;</span><span class="o">:</span> <span class="s2">&quot;get&quot;</span>
+      <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Login page&quot;</span>
+      <span class="s2">&quot;auth&quot;</span><span class="o">:</span> <span class="kc">false</span>
+
+    <span class="s2">&quot;login_process&quot;</span><span class="o">:</span>
+      <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;/login&quot;</span>
+      <span class="s2">&quot;method&quot;</span><span class="o">:</span> <span class="s2">&quot;post&quot;</span>
+      <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Login process&quot;</span>
+      <span class="s2">&quot;auth&quot;</span><span class="o">:</span> <span class="kc">false</span>
+
+  <span class="nv">index: </span><span class="nf">(req, res) -&gt;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span> <span class="s1">&#39;Cosson games\&#39; main page&#39;</span>
+    <span class="k">return</span>
+    
+  <span class="nv">secured: </span><span class="nf">(req, res) -&gt;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span> <span class="s1">&#39;Acc�s s�curis�&#39;</span>
+    <span class="k">return</span>
+    
+  <span class="nv">login: </span><span class="nf">(req, res) -&gt;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span> <span class="s1">&#39;login&#39;</span><span class="p">,</span>  <span class="nv">title: </span><span class="s1">&#39;Login&#39;</span>
+    <span class="k">return</span>
+    
+  <span class="nv">login_process: </span><span class="nf">(req, res)  -&gt;</span>
+    <span class="k">if</span> <span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span> <span class="o">||</span> <span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span> <span class="s1">&#39;login&#39;</span><span class="p">,</span>  <span class="nv">title: </span><span class="s1">&#39;Login&#39;</span><span class="p">,</span> <span class="nv">error: </span><span class="s1">&#39;Please enter login information&#39;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span> <span class="o">==</span> <span class="s1">&#39;mdp&#39;</span>
+        <span class="nv">req.session.username = </span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/belote/stackoverflow&#39;</span><span class="p">)</span>
+     <span class="k">return</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

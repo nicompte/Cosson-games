@@ -1,5 +1,6 @@
 (function() {
   var Belote, MemoryStore, Player, Session, app, controller, express, i, io, parseCookie, players, port, sessionStore, stylus;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   port = process.env.C9_PORT || 1337;
   express = require("express");
   stylus = require("stylus");
@@ -14,7 +15,7 @@
   Player = require("./models/Player.js").Player;
   Belote = require("./models/Belote.js").Belote;
   players = [];
-  for (i = 0; i <= 3; i++) {
+  for (i = 0; i <= 2; i++) {
     players[i] = new Player(i, "player" + i);
   }
   app.configure(function() {
@@ -35,9 +36,10 @@
       format: ':method :url :status'
     }));
     this.use(express.static(__dirname + '/public'));
-    return controller.bootControllers(app);
+    controller.bootControllers(app);
   });
   io.sockets.authorization(function(data, accept) {
+    console.log("Starting authorization");
     if (data.headers.cookie) {
       data.cookie = parseCookie(data.headers.cookie);
       if (!data.cookie['express.sid']) {
@@ -49,9 +51,9 @@
           if (!err && session && session.username) {
             data.session = new Session(data, session);
             players.push(new Player(data.sessionID, data.session.username));
-            return accept(null, true);
+            accept(null, true);
           } else {
-            return accept('Not logged in.', false);
+            accept('Not logged in.', false);
           }
         });
       }
@@ -60,12 +62,45 @@
     }
   });
   io.sockets.on('connection', function(socket) {
-    console.info('A socket with sessionID ' + socket.handshake.sessionID + ' and name ' + socket.handshake.session.username + ' connected!');
+    var belote, s, _i, _len, _ref;
+    belote = this.belote;
+    socket.broadcast.emit('new_player', socket.handshake.session.username);
     if (players.length === 4) {
       this.belote = new Belote(players);
       this.belote.newDeal();
-      return io.of('belote').broadcast.emit('new_deal', this.belote.getPlayerById(socket.handshake.sessionID).hand);
+      _ref = io.sockets.clients();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        s = _ref[_i];
+        s.emit('new_deal', {
+          hand: this.belote.getPlayerById(s.handshake.session.id).hand,
+          potentialTrick: this.belote.getPotentialTrick()
+        });
+      }
+    } else {
+      socket.emit('waiting_for_players', null);
     }
+    socket.on('set_trick', __bind(function(data) {
+      var s, _j, _len2, _ref2;
+      this.belote.setTrick(data.trick, socket.handshake.session.id);
+      _ref2 = io.sockets.clients();
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        s = _ref2[_j];
+        s.emit('end_of_distribution', {
+          new_cards: this.belote.getPlayerById(socket.handshake.session.id).hand.slice(5, 7),
+          trick: this.belote.trick,
+          trickTaker: this.belote.trickTaker
+        });
+      }
+    }, this));
   });
+  /*
+  io.sockets.on('set_trick', (socket) ->
+    @belote.setTrick(data.trick, socket.handshake.session.sessionID)
+    console.log "SET_TRICK"
+    console.log socket.handshake.session.sessionID
+    console.log @belote.trickTaker
+    return
+  )
+  */
   app.listen(port);
 }).call(this);

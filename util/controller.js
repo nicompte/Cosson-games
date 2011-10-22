@@ -1,8 +1,7 @@
 (function() {
-  var auth, bootController, fs, mappingString;
+  var auth, bootController, fs;
   fs = require("fs");
   auth = require("../util/authorized_controller");
-  mappingString = "";
   bootController = function(app, file) {
     var actions, mapping, name;
     name = file.replace(".js", "");
@@ -16,30 +15,30 @@
           switch (a.method) {
             case "get":
               if (!a.auth) {
-                return app.get(a.url, fn);
+                app.get(a.url, fn);
               } else {
-                return app.get(a.url, [auth.handle_authorized_request], fn);
+                app.get(a.url, [auth.handle_authorized_request], fn);
               }
               break;
             case "post":
               if (!a.auth) {
-                return app.post(a.url, fn);
+                app.post(a.url, fn);
               } else {
-                return app.post(a.url, [auth.handle_authorized_request], fn);
+                app.post(a.url, [auth.handle_authorized_request], fn);
               }
               break;
             case "put":
               if (!a.auth) {
-                return app.put(a.url, fn);
+                app.put(a.url, fn);
               } else {
-                return app.put(a.url, [auth.handle_authorized_request], fn);
+                app.put(a.url, [auth.handle_authorized_request], fn);
               }
               break;
             case "delete":
               if (!a.auth) {
-                return app.del(a.url, fn);
+                app.del(a.url, fn);
               } else {
-                return app.del(a.url, [auth.handle_authorized_request], fn);
+                app.del(a.url, [auth.handle_authorized_request], fn);
               }
           }
         } else {
@@ -50,18 +49,19 @@
   };
   module.exports = {
     bootControllers: function(app) {
-      return fs.readdir(__dirname + "/../controllers", function(err, files) {
-        var file, _i, _len;
+      fs.readdir(__dirname + "/../controllers", function(err, files) {
+        var file, _i, _len, _results;
         if (err) {
           throw err;
         }
+        _results = [];
         for (_i = 0, _len = files.length; _i < _len; _i++) {
           file = files[_i];
           if (/.js$/.test(file)) {
-            bootController(app, file);
-            return;
+            _results.push(bootController(app, file));
           }
         }
+        return _results;
       });
     }
   };

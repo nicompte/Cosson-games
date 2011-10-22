@@ -1,10 +1,9 @@
 !!!5
 html(lang = 'en')
   head
-    title = title
-      link(rel = "stylesheet", type = "text/css", href =  "/stylesheets/stackoverflow.css")
-      script(type = 'text/javascript', src = '/socket.io/socket.io.js')
-      script(type = 'text/javascript', src =  '/scripts/mootools-core-1.4.0-full-nocompat.js')
-      script(type = 'text/javascript'
-src = '/scripts/belote.js')
-    body!= body
+    link(rel = "stylesheet", type = "text/css", href =  "/stylesheets/stackoverflow.css")
+    script(type = 'text/javascript', src = '/socket.io/socket.io.js')
+    script(type = 'text/javascript', src = '/scripts/jquery-1.6.4.min.js')
+    script(type = 'text/javascript', src = '/scripts/jquery.tmpl-1.0.0pre.js')
+    script(type = 'text/javascript', src = '/scripts/knockout-1.3beta.min.js')
+  body!= body

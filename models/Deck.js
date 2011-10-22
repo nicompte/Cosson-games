@@ -8,7 +8,7 @@
       switch (numberOfCards) {
         case 32:
           for (i = 0; i <= 31; i++) {
-            this.deck[i] = new Card(i, Card.families['fr'][Math.floor(i / 8)], Card.values['fr'][(i % 8) + 5]);
+            this.deck[i] = new Card(i, Math.floor(i / 8), Card.families['fr'][Math.floor(i / 8)], (i % 8) + 5, Card.values['fr'][(i % 8) + 5]);
           }
           break;
         case 52:
@@ -29,7 +29,7 @@
       }
     };
     Deck.prototype.takeCards = function(numberOfCards) {
-      this.deck.splice(0, numberOfCards);
+      return this.deck.splice(0, numberOfCards);
     };
     Deck.prototype.addCards = function(cards) {
       this.deck.push(cards);

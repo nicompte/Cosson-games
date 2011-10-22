@@ -1,1 +1,20 @@
 h1 Bla
+
+h2 Cards
+div
+  <!-- ko foreach: hand -->
+  span(data-bind="text: id, click: $parent.alerta")
+  <!-- /ko -->
+
+h2 Deck
+ul
+  <!-- ko foreach: deck -->
+  li(data-bind="text: id")
+  <!-- /ko -->
+
+
+script(type = 'text/javascript', src = '/scripts/belote.js')
+
+ul(data-bind="template: {name:'handTemplate', foreach: hand}")
+script#handTemplate(type="text/x-jquery-tmpl")
+  li ${id}
