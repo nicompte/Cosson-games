@@ -1,17 +1,27 @@
+deck = new Deck(32)
+
 cardF = (@id) ->
 
 viewModel =
   hand: ko.observableArray()
   deck: ko.observableArray()
+  belote: ko.observable(new Belote())
   addCard: (id)->
-    @hand.push(new cardF(id))
+    @hand.push(deck.deck[id])
     return
   setPotentialTrick: (id)->
-    @deck.push(new cardF(id))
+    viewModel.belote().potentialTrick(deck.deck[id])
     return
-  alerta:->
-    alert("Hello")
+  setTrick:->
+    socket.emit('set_trick', { trick: @family.id });
+    viewModel.hand.push(@)
+    viewModel.belote().canChooseTrick(false)
+    viewModel.belote().canChooseAnyTrick(false)
     return
+  pass:->
+    socket.emit('pass');
+    viewModel.belote().canChooseTrick(false)
+    viewModel.belote().canChooseAnyTrick(true)
 
 ko.applyBindings(viewModel)
 
@@ -39,7 +49,6 @@ socket.on('new_deal', (data) ->
     return
   )
   viewModel.setPotentialTrick(data.potentialTrick.id)
-    #socket.emit('set_trick', { trick: 0 });
   return
 )
 
@@ -54,7 +63,17 @@ socket.on('new_player', (data) ->
 )
 
 socket.on('end_of_distribution', (data) ->
-  console.log data
+  $.each(data.new_cards, ->
+    viewModel.addCard(this.id)
+    return
+  )
+  return
+)
+
+socket.on('can_choose_trick', (data) ->
+  console.log("Can choose trick")
+  viewModel.belote().canChooseTrick = true;
+  console.log viewModel.belote().canChooseTrick
   return
 )
 

@@ -1,19 +1,31 @@
 (function() {
-  var cardF, socket, viewModel;
+  var cardF, deck, socket, viewModel;
+  deck = new Deck(32);
   cardF = function(id) {
     this.id = id;
   };
   viewModel = {
     hand: ko.observableArray(),
     deck: ko.observableArray(),
+    belote: ko.observable(new Belote()),
     addCard: function(id) {
-      this.hand.push(new cardF(id));
+      this.hand.push(deck.deck[id]);
     },
     setPotentialTrick: function(id) {
-      this.deck.push(new cardF(id));
+      viewModel.belote().potentialTrick(deck.deck[id]);
     },
-    alerta: function() {
-      alert("Hello");
+    setTrick: function() {
+      socket.emit('set_trick', {
+        trick: this.family.id
+      });
+      viewModel.hand.push(this);
+      viewModel.belote().canChooseTrick(false);
+      viewModel.belote().canChooseAnyTrick(false);
+    },
+    pass: function() {
+      socket.emit('pass');
+      viewModel.belote().canChooseTrick(false);
+      return viewModel.belote().canChooseAnyTrick(true);
     }
   };
   ko.applyBindings(viewModel);
@@ -41,6 +53,13 @@
     console.log(data + " joined the game");
   });
   socket.on('end_of_distribution', function(data) {
-    console.log(data);
+    $.each(data.new_cards, function() {
+      viewModel.addCard(this.id);
+    });
+  });
+  socket.on('can_choose_trick', function(data) {
+    console.log("Can choose trick");
+    viewModel.belote().canChooseTrick = true;
+    console.log(viewModel.belote().canChooseTrick);
   });
 }).call(this);

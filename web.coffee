@@ -65,31 +65,44 @@ io.sockets.authorization((data, accept) ->
 io.sockets.on('connection', (socket) ->
   #console.info('A socket with sessionID ' + socket.handshake.sessionID + ' and name ' + socket.handshake.session.username+' connected!')
   belote = @belote
+  #Notify the other player that the player entered the game
   socket.broadcast.emit('new_player', socket.handshake.session.username)
-  if players.length==4
+  #If we have 4 players, let the fun begin!  
+  if players.length is 4
     @belote = new Belote(players)
     @belote.newDeal()
+    #Distribute 5 cards to anyone
     for s in io.sockets.clients()
       s.emit('new_deal', hand: @belote.getPlayerById(s.handshake.session.id).hand, potentialTrick: @belote.getPotentialTrick())
+    console.log ("ROUND : " + @belote.round%4)
+    #Notigfy the first player he can choose the trick
+    for s in io.sockets.clients() when s.handshake.session.id is @belote.players[@belote.round%4 + 3].id
+      s.emit('can_choose_trick')
+  #If we do not have 4 players, we tell everyone the last ones are late
   else
     socket.emit('waiting_for_players', null)
-
+  
+  #Choose the trick for the round
   socket.on('set_trick', (data) =>
     @belote.setTrick(data.trick, socket.handshake.session.id)
     for s in io.sockets.clients()
+      #Distribute the rest of the cards
       s.emit('end_of_distribution', new_cards: @belote.getPlayerById(socket.handshake.session.id).hand.slice(5,7), trick: @belote.trick, trickTaker: @belote.trickTaker)
     return
   )
+  
+  #When the player passes
+  socket.on('pass', =>
+    if @belote.trickRound = 7
+      @belote.trickRound = 0
+    else
+      @belote.trickRound += 1
+    for s in io.sockets.clients() when s.handshake.session.id is @belote.getPlayerById(@belote.trickRound).id
+      s.emit('can_choose_trick')
+    return
+  )
+
   return
 )
-###
-io.sockets.on('set_trick', (socket) ->
-  @belote.setTrick(data.trick, socket.handshake.session.sessionID)
-  console.log "SET_TRICK"
-  console.log socket.handshake.session.sessionID
-  console.log @belote.trickTaker
-  return
-)
-###
 
 app.listen port

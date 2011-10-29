@@ -8,6 +8,7 @@ class Belote extends CardGame
     super deck, players
     @teams =  []
     @trump = @trick = @trickTaker = @potentialTrick = null
+    @trickRound = 0
     #Set the card values, specific à la belote
     @cardValue = [5, 6, 7, 9, 10, 11,  8, 12]
     @trickValue = [5, 6, 10, 11, 8, 12, 7, 9]
@@ -29,6 +30,7 @@ class Belote extends CardGame
   
   #New deal, 3 then 2 cards          
   newDeal: ->
+    @roundTrick = @round
     @distribute([3,2], 1, @round%4)
     return
 
