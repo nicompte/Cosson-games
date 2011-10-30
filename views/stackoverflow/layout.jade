@@ -1,12 +1,12 @@
-!!!5
-html(lang = 'en')
+!!! 5
+html
   head
-    link(rel = "stylesheet", type = "text/css", href =  "/stylesheets/stackoverflow.css")
-    script(type = 'text/javascript', src = '/socket.io/socket.io.js')
-    script(type = 'text/javascript', src = '/scripts/libs/jquery-1.6.4.min.js')
-    script(type = 'text/javascript', src = '/scripts/libs/jquery.tmpl-1.0.0pre.js')
-    script(type = 'text/javascript', src = '/scripts/libs/knockout-1.3beta.min.js')
-    script(type = 'text/javascript', src = '/scripts/models/Card.js')
-    script(type = 'text/javascript', src = '/scripts/models/Deck.js')
-    script(type = 'text/javascript', src = '/scripts/models/Belote.js')
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    title
+      | c# - IsolationLevel.ReadUncommitted blocking Reading on different connection to
+      | MSSQL 2008 - Stack Overflow
+    link(rel='shortcut icon', href='http://cdn.sstatic.net/stackoverflow/img/favicon.ico')
+    link(rel='apple-touch-icon', href='http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon.png')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/all.css')
+    include included_files
   body!= body

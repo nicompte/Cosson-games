@@ -1,30 +1,444 @@
-h1 Bla
-
-h2 Cards
-div
-  <!-- ko foreach: hand -->
-  button(data-bind="click: $parent.play, enable: $parent.belote().canPlay()")
-    span(data-bind="text: value.shortLabel")
-    span(data-bind="text: family.shortLabel")
-  <!-- /ko -->
-
-<!-- ko if: belote().potentialTrick() -->
-
-button(data-bind="with: belote, click: setTrick, enable: belote().canChooseTrick, visible: belote().canChooseTrick || belote().canChooseAnyTrick")
-  span(data-bind="text: potentialTrick().value.shortLabel")
-  span(data-bind="text: potentialTrick().family.shortLabel")
-
-button(data-bind="click: pass, enable: belote().canChooseTrick() || belote().canChooseAnyTrick()") P
-
-button(data-bind="click: pass, visible: belote().canChooseAnyTrick()") C
-button(data-bind="click: pass, visible: belote().canChooseAnyTrick()") Ca
-button(data-bind="click: pass, visible: belote().canChooseAnyTrick()") P
-button(data-bind="click: pass, visible: belote().canChooseAnyTrick()") T
-
-<!-- /ko -->
-
-script(type = 'text/javascript', src = '/scripts/belote.js')
-
-ul(data-bind="template: {name:'handTemplate', foreach: hand}")
-script#handTemplate(type="text/x-jquery-tmpl")
-  li ${id}
+body.question-page(style='margin-top: 2.5em;')
+  noscript <div id="noscript-padding"></div>
+  #notify-container
+    #notify--1(style='')
+      span.notify-close
+        a(title='dismiss this notification') ×
+      span.notify-text
+        | Welcome to Q&A for professional and enthusiast programmers — check out the
+        a(onclick='StackExchange.notify.closeFirstTime(); return false;', href='http://stackoverflow.com/faq') FAQ
+        | !
+  #overlay-header
+  #custom-header
+  .container
+    #header
+      #portalLink
+        a.genu(onclick='StackExchange.ready(function(){genuwine.click();});return false;') Stack Exchange
+      #topbar
+        #hlinks
+          span#hlinks-user
+          span#hlinks-nav
+            a(href='http://stackoverflow.com/users/login?returnurl=%2fquestions%2f7945437%2fisolationlevel-readuncommitted-blocking-reading-on-different-connection-to-mssql') log in
+            span.lsep |
+            a(href='http://careers.stackoverflow.com/') careers
+            span.lsep |
+          span#hlinks-custom
+            a(href='http://chat.stackoverflow.com/') chat
+            span.lsep |
+            a(href='http://meta.stackoverflow.com/') meta
+            span.lsep |
+            a(href='http://stackoverflow.com/about') about
+            span.lsep |
+            a(href='http://stackoverflow.com/faq') faq
+        #hsearch
+          form#search(action='http://stackoverflow.com/search', method='get', autocomplete='off')
+            div
+              input.textbox(autocomplete='off', name='q', placeholder='search', tabindex='1', type='text', maxlength='140', size='28', value='')
+      br.cbt
+      #hlogo
+        a(href='http://stackoverflow.com/') Stack Overflow
+      #hmenus
+        .nav.mainnavs
+          ul
+            li.youarehere
+              a#nav-questions(href='http://stackoverflow.com/questions') Questions
+            li
+              a#nav-tags(href='http://stackoverflow.com/tags') Tags
+            li
+              a#nav-users(href='http://stackoverflow.com/users') Users
+            li
+              a#nav-badges(href='http://stackoverflow.com/badges') Badges
+            li
+              a#nav-unanswered(href='http://stackoverflow.com/unanswered') Unanswered
+        .nav.askquestion
+          ul
+            li
+              a#nav-askquestion(href='http://stackoverflow.com/questions/ask') Ask Question
+    #content
+      #question-header
+        h1
+          a.question-hyperlink(href='./c# - IsolationLevel.ReadUncommitted blocking Reading on different connection to MSSQL 2008 - Stack Overflow_files/c# - IsolationLevel.ReadUncommitted blocking Reading on different connection to MSSQL 2008 - Stack Overflow.html')
+            | IsolationLevel.ReadUncommitted blocking Reading on different connection to MSSQL
+            | 2008
+      #mainbar
+        #question
+          #adzerk1.everyonelovesstackoverflow
+          table
+            tbody
+              tr
+                td.votecell
+                  .vote
+                    input(type='hidden', value='7945437')
+                    a.vote-up-off(title='This question shows research effort; it is useful and clear (click again to undo)') up vote
+                    span.vote-count-post 0
+                    a.vote-down-off(title='This question does not show any research effort; it is unclear or not useful (click again to undo)') down vote
+                    a.star-off(href='http://stackoverflow.com/questions/7945437/isolationlevel-readuncommitted-blocking-reading-on-different-connection-to-mssql#', title='This is a favorite question (click again to undo)') favorite
+                    .favoritecount
+                      b
+                          
+                    a#fb-share-7945437.fb-share(title='share link to this question on Facebook') share [fb]
+                    a#twitter-share-7945437.twitter-share(title='share link to this question on Twitter') share [tw]
+                td.postcell
+                  div
+                    .post-text
+                      p
+                        | Hi I've got a problem with reading from my database when the calling code has a
+                        | pending transaction. Like this:
+                      pre.lang-cs.prettyprint
+                        include belote
+                      p The call to f2() results in a Timeout-Exception.
+                      p
+                        | That behaviour was surprising to me because I thought that IsolationLevel would
+                        | allow reading access to the db. When I remove the transaction from f1() the
+                        | problem disappears.
+                      p
+                        | I am thankful for any comment son this and on how to solve the problem. I would
+                        | like to keep the transaction!
+                      p (Visual studio 2010, C#, .NET 4.0, MSSQL 2008 compatibility level 80)
+                    .post-taglist
+                      a.post-tag(href='http://stackoverflow.com/questions/tagged/c%23', title='show questions tagged \'c#\'', rel='tag') c#
+                      a.post-tag(href='http://stackoverflow.com/questions/tagged/transactions', title='show questions tagged \'transactions\'', rel='tag') transactions
+                      a.post-tag(href='http://stackoverflow.com/questions/tagged/timeout', title='show questions tagged \'timeout\'', rel='tag') timeout
+                    table.fw
+                      tbody
+                        tr
+                          td.vt
+                            .post-menu
+                              a#link-post-7945437(href='http://stackoverflow.com/q/7945437', title='short permalink to this question') link
+                          td.post-signature.owner
+                            .user-info
+                              .user-action-time
+                                | asked
+                                span.relativetime(title='2011-10-30 14:23:57Z') 3 mins ago
+                              .user-gravatar32
+                                a(href='http://stackoverflow.com/users/1018610/bjepsen')
+                                  img(src='/images/usrIcon.png', alt='')
+                              .user-details
+                                a(href='http://stackoverflow.com/users/1018610/bjepsen') bjepsen
+                                br
+                                span.reputation-score(title='reputation score') 1
+              tr
+                td.votecell
+                td
+                  #comments-7945437.comments.dno
+                    table
+                      tbody
+                        tr
+                          td
+                          td
+                  .was-this-helpful(style='color: rgb(0, 0, 0);')
+                    | Was this post useful to you?
+                    input.anon-vote(style='', type='button', value='Yes')
+                    input.anon-vote(style='', type='button', value='No')
+        #answers.no-answers
+          a(name='tab-top')
+          #answers-header
+            .subheader.answers-subheader
+              h2
+              #tabs
+          h2.bottom-notice(style='padding-top: 8px; margin-bottom: -8px;')
+            | Know someone who can answer?
+            | Share a
+            a(href='http://stackoverflow.com/q/7945437') link
+            | to this question via
+            a(href='mailto:?subject=Stack%20Overflow%20Question&body=IsolationLevel.ReadUncommitted%20blocking%20Reading%20on%20different%20connection%20to%20MSSQL%202008%0Ahttp%3a%2f%2fstackoverflow.com%2fq%2f7945437') email
+            | ,
+            a(href='http://twitter.com/share?url=http%3a%2f%2fstackoverflow.com%2fq%2f7945437&text=IsolationLevel.ReadUncommitted%20blocking%20Reading%20on%20different%20connection%20to%20MSSQL%202008') twitter
+            | , or
+            a(href='http://www.facebook.com/sharer.php?u=http%3a%2f%2fstackoverflow.com%2fq%2f7945437&t=IsolationLevel.ReadUncommitted%20blocking%20Reading%20on%20different%20connection%20to%20MSSQL%202008') facebook
+            | .
+          a(name='new-answer')
+          form#post-form.post-form(action='http://stackoverflow.com/questions/7945437/answer/submit', method='post')
+            h2.space Your Answer
+            #post-editor.post-editor
+              .wmd-container
+                #wmd-button-bar.wmd-button-bar
+                  ul#wmd-button-row.wmd-button-row
+                    li#wmd-bold-button.wmd-button(style='left: 0px;')
+                      span(style='background-position: 0px -20px;')
+                    li#wmd-italic-button.wmd-button(style='left: 25px;')
+                      span(style='background-position: -20px -20px;')
+                    li#wmd-spacer1.wmd-spacer(style='left: 50px;')
+                      span(style='background-position: -40px -20px;')
+                    li#wmd-link-button.wmd-button(style='left: 75px;')
+                      span(style='background-position: -40px -20px;')
+                    li#wmd-quote-button.wmd-button(style='left: 100px;')
+                      span(style='background-position: -60px -20px;')
+                    li#wmd-code-button.wmd-button(style='left: 125px;')
+                      span(style='background-position: -80px -20px;')
+                    li#wmd-image-button.wmd-button(style='left: 150px;')
+                      span(style='background-position: -100px -20px;')
+                    li#wmd-spacer2.wmd-spacer(style='left: 175px;')
+                      span(style='background-position: -120px -20px;')
+                    li#wmd-olist-button.wmd-button(style='left: 200px;')
+                      span(style='background-position: -120px -20px;')
+                    li#wmd-ulist-button.wmd-button(style='left: 225px;')
+                      span(style='background-position: -140px -20px;')
+                    li#wmd-heading-button.wmd-button(style='left: 250px;')
+                      span(style='background-position: -160px -20px;')
+                    li#wmd-hr-button.wmd-button(style='left: 275px;')
+                      span(style='background-position: -180px -20px;')
+                    li#wmd-spacer3.wmd-spacer(style='left: 300px;')
+                      span(style='background-position: -200px -20px;')
+                    li#wmd-undo-button.wmd-button(style='left: 325px;')
+                      span(style='background-position: -200px -20px;')
+                    li#wmd-redo-button.wmd-button(style='left: 350px;')
+                      span(style='background-position: -220px -20px;')
+                textarea#wmd-input.wmd-input(name='post-text', cols='92', rows='15', tabindex='101')
+              .fl(style='margin-top: 8px; height: 24px;')  
+              #draft-saved.draft-saved.community-option.fl(style='margin-top: 8px; height: 24px; display: none;') draft saved
+              #wmd-preview.wmd-preview
+              div
+              .edit-block
+                input#fkey(name='fkey', type='hidden', value='0d772c560c9d2748003fb14cc9051928')
+                input#author(name='author', type='text')
+            .form-item
+              table
+                tbody
+                  tr
+                    td.vm.open-id-login
+                      a#login-link(style='font-size: 200%; margin-left: 30px;', href='http://stackoverflow.com/users/login?returnurl=%2fquestions%2f7945437%2fisolationlevel-readuncommitted-blocking-reading-on-different-connection-to-mssql') log in
+                      .orword or
+                      .orline
+                    td.vm
+                      div
+                        label(for='display-name') Name
+                        input#display-name(name='display-name', type='text', size='30', maxlength='30', value='', tabindex='105')
+                      div
+                        label(for='m-address') Email
+                        input#m-address(name='m-address', type='text', size='40', maxlength='100', value='', tabindex='106')
+                        span.edit-field-overlay required, but never shown
+                      div
+                        label(for='home-page') Home Page
+                        input#home-page(name='home-page', type='text', size='40', maxlength='200', value='', tabindex='107')
+            .form-submit.cbt
+              input#submit-button(type='submit', value='Post Your Answer', tabindex='110')
+          h2.bottom-notice
+            | Browse other questions tagged
+            a.post-tag(href='http://stackoverflow.com/questions/tagged/c%23', title='show questions tagged \'c#\'', rel='tag') c#
+            a.post-tag(href='http://stackoverflow.com/questions/tagged/transactions', title='show questions tagged \'transactions\'', rel='tag') transactions
+            a.post-tag(href='http://stackoverflow.com/questions/tagged/timeout', title='show questions tagged \'timeout\'', rel='tag') timeout
+            | or
+            a(href='http://stackoverflow.com/questions/ask') ask your own question
+            | .
+      #sidebar
+        .module.newuser.newuser-greeting(style='')
+          h4 Hello World!
+          div
+            p
+              | This is a collaboratively edited question and answer site for
+              b professional and enthusiast programmers
+              | . It's 100% free, no registration required.
+            p.ar
+              a(href='http://stackoverflow.com/about') about »
+              a(href='http://stackoverflow.com/faq') faq »
+        .module
+          p.label-key tagged
+          .tagged
+            a.post-tag(href='http://stackoverflow.com/questions/tagged/c%23', title='show questions tagged \'c#\'', rel='tag') c#
+            span.item-multiplier × 230170
+            br
+            a.post-tag(href='http://stackoverflow.com/questions/tagged/transactions', title='show questions tagged \'transactions\'', rel='tag') transactions
+            span.item-multiplier × 2699
+            br
+            a.post-tag(href='http://stackoverflow.com/questions/tagged/timeout', title='show questions tagged \'timeout\'', rel='tag') timeout
+            span.item-multiplier × 1567
+            br
+          table#qinfo
+            tbody
+              tr
+                td
+                  p.label-key asked
+                td(style='padding-left: 10px;')
+                  p.label-key(title='2011-10-30 14:23:57Z')
+                    b today
+              tr
+                td
+                  p.label-key viewed
+                td(style='padding-left: 10px;')
+                  p.label-key
+                    b 4 times
+                       
+        #adzerk2.everyonelovesstackoverflow
+        div       
+          .hireme(style='min-height: 220px; margin: 15px 0;')
+        .module
+          h4#h-related Related
+          .related
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/314459/connections-will-not-close-when-using-transaction-binding-explicit-unbind-in-co')
+                | Connections will not close when using Transaction Binding=Explicit Unbind; in
+                | connection string
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/464781/net-asynchronous-rollback-due-to-transaction-timeout') .NET: Asynchronous rollback due to Transaction timeout
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/635047/transaction-timeout-not-working-on-hibernate-with-oracle') transaction timeout not working on hibernate with oracle
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/719576/remoting-connection-over-tcp') Remoting connection over TCP
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/874677/connection-time-out') Connection Time-out
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/1348191/default-transaction-timeout') Default Transaction Timeout
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/1372579/how-to-define-transaction-timeout-during-debugging-application') How to define Transaction Timeout during debugging application
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/1389353/get-jta-transaction-timeout-value-in-weblogic') Get JTA transaction timeout value in WebLogic
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/1500955/adjusting-httpwebrequest-connection-timeout-in-c-sharp') Adjusting HttpWebRequest Connection Timeout in C#
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/1667695/what-if-my-process-is-too-long-for-transaction-timeout-duration') What if my process is too long for transaction timeout duration?
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/2184844/jboss-transaction-timeout-setting') JBoss transaction timeout setting?
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/2247279/jta-transaction-timeout-exception-weblogic-10-x') JTA transaction timeout exception - weblogic 10.X
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/2265733/connection-timeout-property-in-connection-string-ignored') connection timeout property in connection string ignored
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/2463361/is-there-a-transaction-time-out-in-ado-net-which-is-different-from-command-time')
+                | Is there a transaction time out in ADO.Net which is different from command time
+                | out
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/2805327/possible-connection-leaking-causing-system-data-sqlclient-sqlexception-timeout')
+                | Possible connection leaking causing “System.Data.SqlClient.SqlException: Timeout
+                | expired” error in SQL Server?
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/3397227/ado-net-transaction-does-not-enlist-commands-after-first-connection-is-opened-an')
+                | ADO.NET Transaction does not enlist commands after first connection is opened and
+                | closed
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/3977219/sql-server-c-timeout-exception-on-transaction-rollback') SQL Server, C#: Timeout exception on Transaction Rollback
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/4084955/am-i-able-to-track-the-timeout-transactions-in-c-net-on-sqlserver-or-oracle-da')
+                | Am I able to track the timeout transactions in C#/.NET on SQLServer or Oracle
+                | databases?
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/5679828/dont-allow-timeout-on-a-page-though-it-is-in-an-application-that-has-a-timeout') Dont allow timeout on a page, though it is in an application that has a timeout
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/5903538/messagequeuetransaction-timeout') MessageQueueTransaction timeout
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/5915462/in-sql-what-is-the-default-max-transaction-timeout') In SQL What is the default max transaction timeout
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/6072870/how-to-find-what-database-call-is-not-in-the-transaction') How to find what database call is not in the transaction
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/6243289/transaction-timeout-for-oledbconnection-beginntransaction') Transaction timeout for OleDbConnection.BeginnTransaction()
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/7469661/how-jta-jts-handle-transaction-time-out-issue') How JTA/JTS handle transaction time out issue?
+            .spacer
+              a.question-hyperlink(href='http://stackoverflow.com/questions/7563743/msdtc-transaction-timeout-issue') MSDTC transaction timeout issue
+      #feed-link
+        #feed-link-text
+          a(href='http://stackoverflow.com/feeds/question/7945437', title='feed of this question and its answers')
+            span.feed-icon
+            | question feed
+      noscript
+        | <div><img src="/posts/7945437/ivc/928c" class="dno" alt=""></div>
+      #prettify-lang(style='display: none;') lang-cs
+  #footer
+    .footerwrap
+      #footer-menu
+        a(href='http://stackoverflow.com/about') about
+        | |
+        a(href='http://stackoverflow.com/faq') faq
+        | |
+        a(href='http://blog.stackexchange.com/') blog
+        | |
+        a(href='http://chat.stackoverflow.com/') chat
+        | |
+        a(href='http://data.stackexchange.com/') data
+        | |
+        a(href='http://blog.stackoverflow.com/category/podcasts/') podcast
+        | |
+        a(href='http://shop.stackexchange.com/') shop
+        | |
+        a(href='http://stackexchange.com/legal') legal
+        | |
+        a(href='http://engine.adzerk.net/redirect/0/2776/2751/0/4de3c60f719c4dfcb1a57531c7050090/0') advertising info
+        | |
+        a(onclick='StackExchange.switchMobile(\'on\', \'/questions/7945437/isolationlevel-readuncommitted-blocking-reading-on-different-connection-to-mssql\')') mobile
+        | |
+        b
+          a(href='mailto:team@stackoverflow.com') contact us
+        | |
+        b
+          a(href='http://meta.stackoverflow.com/') feedback
+        #footer-sites
+          span(style='color: #FE7A15; font-size: 140%;') ■
+          a(href='http://stackoverflow.com/') stackoverflow.com
+          span(style='color: #FE7A15; font-size: 140%;') ■
+          a(href='http://stackapps.com/') api/apps
+          span(style='color: #FE7A15; font-size: 140%;') ■
+          a(href='http://careers.stackoverflow.com/') careers
+          span(style='color: #E8272C; font-size: 140%;') ■
+          a(href='http://serverfault.com/') serverfault.com
+          span(style='color: #00AFEF; font-size: 140%;') ■
+          a(href='http://superuser.com/') superuser.com
+          span(style='color: #969696; font-size: 140%;') ■
+          a(href='http://meta.stackoverflow.com/') meta
+          span(style='color: #46937D; font-size: 140%;') ■
+          a(href='http://area51.stackexchange.com/') area 51
+          span(style='color: #C0D0DC; font-size: 140%;') ■
+          a(href='http://webapps.stackexchange.com/') webapps
+          span(style='color: #000000; font-size: 140%;') ■
+          a(href='http://gaming.stackexchange.com/') gaming
+          span(style='color: #dd4814; font-size: 140%;') ■
+          a(href='http://askubuntu.com/') ubuntu
+          span(style='color: #9ce4fe; font-size: 140%;') ■
+          a(href='http://webmasters.stackexchange.com/') webmasters
+          span(style='color: #cf4d3f; font-size: 140%;') ■
+          a(href='http://cooking.stackexchange.com/') cooking
+          span(style='color: #f4f28d; font-size: 140%;') ■
+          a(href='http://gamedev.stackexchange.com/') game development
+          span(style='color: #0f3559; font-size: 140%;') ■
+          a(href='http://math.stackexchange.com/') math
+          span(style='color: #f2f2f2; font-size: 140%;') ■
+          a(href='http://photo.stackexchange.com/') photography
+          span(style='color: #037187; font-size: 140%;') ■
+          a(href='http://stats.stackexchange.com/') stats
+          span(style='color: #f1e7cc; font-size: 140%;') ■
+          a(href='http://tex.stackexchange.com/') tex
+          span(style='color: #e1cdae; font-size: 140%;') ■
+          a(href='http://english.stackexchange.com/') english
+          span(style='color: #a2d9f6; font-size: 140%;') ■
+          a(href='http://cstheory.stackexchange.com/') theoretical cs
+          span(style='color: #1b3e6c; font-size: 140%;') ■
+          a(href='http://programmers.stackexchange.com/') programmers
+          span(style='color: #293a5d; font-size: 140%;') ■
+          a(href='http://unix.stackexchange.com/') unix
+          span(style='color: #bec0cb; font-size: 140%;') ■
+          a(href='http://apple.stackexchange.com/') apple
+          span(style='color: #939185; font-size: 140%;') ■
+          a(href='http://wordpress.stackexchange.com/') wordpress
+          span(style='color: #b5cda4; font-size: 140%;') ■
+          a(href='http://physics.stackexchange.com/') physics
+          span(style='color: #4176ab; font-size: 140%;') ■
+          a(href='http://diy.stackexchange.com/') home improvement
+          span(style='color: #d1d8d7; font-size: 140%;') ■
+          a(href='http://gis.stackexchange.com/') gis
+          span(style='color: #e5e2d3; font-size: 140%;') ■
+          a(href='http://electronics.stackexchange.com/') electronics
+          span(style='color: #a4c639; font-size: 140%;') ■
+          a(href='http://android.stackexchange.com/') android
+          span(style='color: #2e4e60; font-size: 140%;') ■
+          a(href='http://security.stackexchange.com/') security
+          span(style='color: #45bcb5; font-size: 140%;') ■
+          a(href='http://bicycles.stackexchange.com/') bicycles
+          span(style='color: #00adee; font-size: 140%;') ■
+          a(href='http://dba.stackexchange.com/') dba
+          span(style='color: #2edaf0; font-size: 140%;') ■
+          a(href='http://drupal.stackexchange.com/') drupal
+          span(style='color: #213951; font-size: 140%;') ■
+          a(href='http://sharepoint.stackexchange.com/') sharepoint
+      #footer-flair
+        a.peer1(href='http://www.peer1.com/stackoverflow')
+        a.cc-wiki-link(href='http://creativecommons.org/licenses/by-sa/3.0/')
+        #svnrev rev 2011.10.29.2
+      #copyright
+        | site design / logo © 2011 stack exchange inc;
+        | user contributions licensed under
+        a(href='http://creativecommons.org/licenses/by-sa/3.0/', rel='license') cc-wiki
+        | with
+        a(href='http://blog.stackoverflow.com/2009/06/attribution-required/', rel='license') attribution required
+  noscript
+    | <div id="noscript-warning">Stack Overflow works best with JavaScript enabled<img
+    | src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt=""
+    | class="dno"></div>
