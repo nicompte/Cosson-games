@@ -16,8 +16,7 @@ viewModel =
     viewModel.belote().canChooseTrick(true)
     return
   setTrick:->
-    console.log(@)
-    socket.emit('set_trick', { trick: @family.id });
+    socket.emit('set_trick', { trick: @family.id })
     viewModel.hand.push(@)
     viewModel.belote().canChooseTrick(false)
     viewModel.belote().canChooseAnyTrick(false)
