@@ -13,8 +13,10 @@ viewModel =
     return
   setPotentialTrick: (id)->
     viewModel.belote().potentialTrick(deck.deck[id])
+    viewModel.belote().canChooseTrick(true)
     return
   setTrick:->
+    console.log(@)
     socket.emit('set_trick', { trick: @family.id });
     viewModel.hand.push(@)
     viewModel.belote().canChooseTrick(false)
@@ -28,6 +30,7 @@ viewModel =
   chat:->
     viewModel.addMessage(viewModel.message(), "You")
     socket.emit('send_message', message: viewModel.message())
+    viewModel.message("")
     return
   addMessage:(message, author)->
     viewModel.messages.push(new Message(message, author))
@@ -82,8 +85,8 @@ socket.on('end_of_distribution', (data) ->
 
 socket.on('can_choose_trick', (data) ->
   console.log("Can choose trick")
-  viewModel.belote().canChooseTrick = true;
-  console.log viewModel.belote().canChooseTrick
+  viewModel.belote.canChooseTrick = true
+  console.log viewModel.belote.canChooseTrick
   return
 )
 

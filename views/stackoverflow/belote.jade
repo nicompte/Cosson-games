@@ -1,15 +1,12 @@
 #belote
-  h2 Cards
-  div
-    <!-- ko foreach: hand -->
-    button(data-bind="click: $parent.play, enable: $parent.belote().canPlay()")
+  div(data-bind="foreach: hand")
+    button(data-bind="click: $parent.play, enable: $parent.belote.canPlay")
       span(data-bind="text: value.shortLabel")
       span(data-bind="text: family.shortLabel")
-    <!-- /ko -->
 
   <!-- ko if: belote().potentialTrick() -->
 
-  button(data-bind="with: belote, click: setTrick, enable: belote().canChooseTrick, visible: belote().canChooseTrick || belote().canChooseAnyTrick")
+  button(data-bind="with: belote, click: setTrick, enable: belote().canChooseTrick(), visible: belote().canChooseTrick() || belote().canChooseAnyTrick()")
     span(data-bind="text: potentialTrick().value.shortLabel")
     span(data-bind="text: potentialTrick().family.shortLabel")
 
