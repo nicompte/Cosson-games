@@ -9,6 +9,7 @@ class Belote extends CardGame
     @teams =  []
     @trump = @trick = @trickTaker = @potentialTrick = null
     @trickRound = 0
+    @playround = 0
     #Set the card values, specific à la belote
     @cardValue = [5, 6, 7, 9, 10, 11,  8, 12]
     @trickValue = [5, 6, 10, 11, 8, 12, 7, 9]
@@ -79,6 +80,7 @@ class Belote extends CardGame
   #Set the trick for the current game
   setTrick: (@trick, @trickTaker) ->
     @endDistribution()
+    @playRound = @round%4
   
   #Return true if card1 wins agains card2  
   winsAgainst: (card1, card2) ->

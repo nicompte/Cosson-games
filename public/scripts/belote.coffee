@@ -13,18 +13,17 @@ viewModel =
     return
   setPotentialTrick: (id)->
     viewModel.belote().potentialTrick(deck.deck[id])
-    viewModel.belote().canChooseTrick(true)
     return
-  setTrick:->
-    socket.emit('set_trick', { trick: @family.id })
-    viewModel.hand.push(@)
+  setTrick:(id)->
+    socket.emit('set_trick', id)
+    viewModel.hand.push(viewModel.belote().potentialTrick())
     viewModel.belote().canChooseTrick(false)
     viewModel.belote().canChooseAnyTrick(false)
     return
   pass:->
     socket.emit('pass');
     viewModel.belote().canChooseTrick(false)
-    viewModel.belote().canChooseAnyTrick(true)
+    viewModel.belote().canChooseAnyTrick(false)
     return
   chat:->
     viewModel.addMessage(viewModel.message(), "You")
@@ -77,15 +76,21 @@ socket.on('new_player', (data) ->
 socket.on('end_of_distribution', (data) ->
   $.each(data.new_cards, ->
     viewModel.addCard(this.id)
+    viewModel.belote().canChooseTrick(false)
+    viewModel.belote().canChooseAnyTrick(false)
+    viewModel.belote().potentialTrick(null)
     return
   )
   return
 )
 
 socket.on('can_choose_trick', (data) ->
-  console.log("Can choose trick")
-  viewModel.belote.canChooseTrick = true
-  console.log viewModel.belote.canChooseTrick
+  viewModel.belote().canChooseTrick(true)
+  return
+)
+
+socket.on('can_choose_any_trick', (data) ->
+  viewModel.belote().canChooseAnyTrick(true)
   return
 )
 

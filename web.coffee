@@ -17,8 +17,11 @@ Player = require("./models/Player.js").Player
 Belote = require("./models/Belote.js").Belote
 
 players = []
-for i in [0..2]
+for i in [0..1]
   players[i] = new Player i, "player"+i
+  
+players = []
+  
 
 app.configure(->
   @set 'view engine', 'jade'
@@ -75,9 +78,8 @@ io.sockets.on('connection', (socket) ->
     #Distribute 5 cards to anyone
     for s in io.sockets.clients()
       s.emit('new_deal', hand: @belote.getPlayerById(s.handshake.session.id).hand, potentialTrick: @belote.getPotentialTrick())
-    console.log ("ROUND : " + @belote.round%4)
     #Notigfy the first player he can choose the trick
-    for s in io.sockets.clients() when s.handshake.session.id is @belote.players[@belote.round%4 + 3].id
+    for s in io.sockets.clients() when s.handshake.session.id is @belote.players[@belote.roundTrick].id
       s.emit('can_choose_trick')
   #If we do not have 4 players, we tell everyone the last ones are late
   else
@@ -88,18 +90,19 @@ io.sockets.on('connection', (socket) ->
     @belote.setTrick(data.trick, socket.handshake.session.id)
     for s in io.sockets.clients()
       #Distribute the rest of the cards
-      s.emit('end_of_distribution', new_cards: @belote.getPlayerById(socket.handshake.session.id).hand.slice(5,7), trick: @belote.trick, trickTaker: @belote.trickTaker)
+      s.emit('end_of_distribution', new_cards: @belote.getPlayerById(s.handshake.session.id).hand.slice(5,7), trick: @belote.trick, trickTaker: @belote.trickTaker)
+      s.emit('can_play') if s.handshake.session.id is @belote.players[@belote.playRound].id
     return
   )
   
   #When the player passes
   socket.on('pass', =>
-    if @belote.trickRound = 7
-      @belote.trickRound = 0
-    else
-      @belote.trickRound += 1
-    for s in io.sockets.clients() when s.handshake.session.id is @belote.getPlayerById(@belote.trickRound).id
-      s.emit('can_choose_trick')
+    @belote.trickRound += 1
+    for s in io.sockets.clients() when s.handshake.session.id is @belote.players[@belote.trickRound%4].id
+      if @belote.trickRound-@belote.round < 4 
+        s.emit('can_choose_trick')
+      else
+        s.emit('can_choose_any_trick')
     return
   )
   
