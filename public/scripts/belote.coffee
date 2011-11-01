@@ -3,9 +3,11 @@ deck = new Deck(32)
 cardF = (@id) ->
 
 viewModel =
-  hand: ko.observableArray()
-  deck: ko.observableArray()
-  belote: ko.observable(new Belote())
+  hand: new ko.observableArray()
+  deck: new ko.observableArray()
+  belote: new ko.observable(new Belote())
+  messages: new ko.observableArray()
+  message: new ko.observable()
   addCard: (id)->
     @hand.push(deck.deck[id])
     return
@@ -22,10 +24,18 @@ viewModel =
     socket.emit('pass');
     viewModel.belote().canChooseTrick(false)
     viewModel.belote().canChooseAnyTrick(true)
+    return
+  chat:->
+    viewModel.addMessage(viewModel.message(), "You")
+    socket.emit('send_message', message: viewModel.message())
+    return
+  addMessage:(message, author)->
+    viewModel.messages.push(new Message(message, author))
+    return
 
 ko.applyBindings(viewModel)
 
-socket = io.connect 'http://cosson-games.nicompte.c9.io'.socket
+socket = io.connect('http://localhost')
 
 socket.on('connect',  (data) ->
   console.info 'Successfully established a working connection'
@@ -77,3 +87,6 @@ socket.on('can_choose_trick', (data) ->
   return
 )
 
+socket.on('receive_message', (data)->
+  viewModel.addMessage(data.message, data.author)
+)

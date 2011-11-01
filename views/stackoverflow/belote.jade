@@ -21,9 +21,3 @@
   button(data-bind="click: pass, visible: belote().canChooseAnyTrick()") T
 
   <!-- /ko -->
-
-  script(type = 'text/javascript', src = '/scripts/belote.js')
-
-  ul(data-bind="template: {name:'handTemplate', foreach: hand}")
-  script#handTemplate(type="text/x-jquery-tmpl")
-    li ${id}

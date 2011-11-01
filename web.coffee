@@ -53,6 +53,7 @@ io.sockets.authorization((data, accept) ->
         if !err && session && session.username
           data.session = new Session(data, session)
           players.push(new Player(data.sessionID, data.session.username))
+          console.log("Connecté")
           accept(null, true)
         else
           accept('Not logged in.', false)
@@ -63,7 +64,7 @@ io.sockets.authorization((data, accept) ->
 )
 
 io.sockets.on('connection', (socket) ->
-  #console.info('A socket with sessionID ' + socket.handshake.sessionID + ' and name ' + socket.handshake.session.username+' connected!')
+  console.info('A socket with sessionID ' + socket.handshake.sessionID + ' and name ' + socket.handshake.session.username+' connected!')
   belote = @belote
   #Notify the other player that the player entered the game
   socket.broadcast.emit('new_player', socket.handshake.session.username)
@@ -99,6 +100,13 @@ io.sockets.on('connection', (socket) ->
       @belote.trickRound += 1
     for s in io.sockets.clients() when s.handshake.session.id is @belote.getPlayerById(@belote.trickRound).id
       s.emit('can_choose_trick')
+    return
+  )
+  
+  #Chat
+  socket.on('send_message', (data) =>
+    socket.broadcast.emit('receive_message', author: socket.handshake.session.username, message: data.message)
+    #socket.emit('receive_message', author: socket.handshake.session.username, message: data.message)
     return
   )
 

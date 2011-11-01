@@ -120,12 +120,18 @@ body.question-page(style='margin-top: 2.5em;')
               tr
                 td.votecell
                 td
-                  #comments-7945437.comments.dno
+                  #comments-7945437.comments
                     table
-                      tbody
-                        tr
+                      tbody(data-bind="foreach: messages")
+                        tr.comment
                           td
-                          td
+                          td.comment-text
+                            div
+                              span.comment-copy(data-bind="text: message")
+                              a(class="coment-user", data-bind="text: author")
+                              span.comment-date
+                                span
+                                  | 12 janvier
                   .was-this-helpful(style='color: rgb(0, 0, 0);')
                     | Was this post useful to you?
                     input.anon-vote(style='', type='button', value='Yes')
@@ -148,7 +154,7 @@ body.question-page(style='margin-top: 2.5em;')
             a(href='http://www.facebook.com/sharer.php?u=http%3a%2f%2fstackoverflow.com%2fq%2f7945437&t=IsolationLevel.ReadUncommitted%20blocking%20Reading%20on%20different%20connection%20to%20MSSQL%202008') facebook
             | .
           a(name='new-answer')
-          form#post-form.post-form(action='http://stackoverflow.com/questions/7945437/answer/submit', method='post')
+          form#post-form.post-form(data-bind="submit: chat")
             h2.space Your Answer
             #post-editor.post-editor
               .wmd-container
@@ -184,35 +190,14 @@ body.question-page(style='margin-top: 2.5em;')
                       span(style='background-position: -200px -20px;')
                     li#wmd-redo-button.wmd-button(style='left: 350px;')
                       span(style='background-position: -220px -20px;')
-                textarea#wmd-input.wmd-input(name='post-text', cols='92', rows='15', tabindex='101')
+                textarea#wmd-input.wmd-input(cols='92', rows='15', tabindex='101', data-bind='value: message')
               .fl(style='margin-top: 8px; height: 24px;')  
               #draft-saved.draft-saved.community-option.fl(style='margin-top: 8px; height: 24px; display: none;') draft saved
-              #wmd-preview.wmd-preview
               div
               .edit-block
-                input#fkey(name='fkey', type='hidden', value='0d772c560c9d2748003fb14cc9051928')
-                input#author(name='author', type='text')
-            .form-item
-              table
-                tbody
-                  tr
-                    td.vm.open-id-login
-                      a#login-link(style='font-size: 200%; margin-left: 30px;', href='http://stackoverflow.com/users/login?returnurl=%2fquestions%2f7945437%2fisolationlevel-readuncommitted-blocking-reading-on-different-connection-to-mssql') log in
-                      .orword or
-                      .orline
-                    td.vm
-                      div
-                        label(for='display-name') Name
-                        input#display-name(name='display-name', type='text', size='30', maxlength='30', value='', tabindex='105')
-                      div
-                        label(for='m-address') Email
-                        input#m-address(name='m-address', type='text', size='40', maxlength='100', value='', tabindex='106')
-                        span.edit-field-overlay required, but never shown
-                      div
-                        label(for='home-page') Home Page
-                        input#home-page(name='home-page', type='text', size='40', maxlength='200', value='', tabindex='107')
             .form-submit.cbt
-              input#submit-button(type='submit', value='Post Your Answer', tabindex='110')
+              button#submit-button(type='submit', tabindex='110')
+                \Post Your Answer
           h2.bottom-notice
             | Browse other questions tagged
             a.post-tag(href='http://stackoverflow.com/questions/tagged/c%23', title='show questions tagged \'c#\'', rel='tag') c#
@@ -442,3 +427,4 @@ body.question-page(style='margin-top: 2.5em;')
     | <div id="noscript-warning">Stack Overflow works best with JavaScript enabled<img
     | src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt=""
     | class="dno"></div>
+  script(type = 'text/javascript', src = '/scripts/belote.js')
