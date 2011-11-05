@@ -17,6 +17,6 @@
 		"coffee-script": "1.1.2"
   },
 	"scripts": { 
-		"start": "./start_script" 
+		"start": "start_script" 
 	}
 }
