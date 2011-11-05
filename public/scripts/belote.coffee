@@ -54,7 +54,6 @@ socket.on('connect_failed', (reason) ->
 )
 
 socket.on('new_deal', (data) ->
-  console.log data
   $.each(data.hand, ->
     viewModel.addCard(this.id)
     return
@@ -96,4 +95,12 @@ socket.on('can_choose_any_trick', (data) ->
 
 socket.on('receive_message', (data)->
   viewModel.addMessage(data.message, data.author)
+)
+socket.on('can_play', (data)->
+  console.log(data)
+  viewModel.belote().playableCards().push(data)
+  for card in data
+    for cardInHand in viewModel.hand()
+      if card.id is cardInHand.id
+        cardInHand.playable = true
 )

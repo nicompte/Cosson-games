@@ -3,6 +3,7 @@ class @Card
   constructor: (@id, family, value, language) ->
     @family= Card.families[language][family]
     @value= Card.values[language][value]
+    @playable = false
   #Card families
   @families:
     en: ["Hearts", "Diamonds", "Spades", "Clubs"]

@@ -6,8 +6,8 @@ class Belote extends CardGame
     deck = new Deck 32
     deck.shuffle()
     super deck, players
-    @teams =  []
-    @trump = @trick = @trickTaker = @potentialTrick = null
+    @teams = @trump = []
+    @trick = @trickTaker = @potentialTrick = null
     @trickRound = 0
     @playround = 0
     #Set the card values, specific à la belote
@@ -57,6 +57,22 @@ class Belote extends CardGame
       [true, @getTrumpWinner()]
     else
       [false, WHO_HAS_TO_]
+      
+    
+  #Return playable cards
+  getPlayableCardsByPlayerId: (playerId) ->
+    hand = @getPlayerById(playerId).hand
+    return hand if @trump.length is 0
+    playableCards = []
+    for card in hand
+      if card.family is @trump[0].family
+        playableCards.push(card)
+    if playableCards.length is 0
+      for card in hand
+        if card.family is @trick
+          playableCards.push(card)
+    if playableCards.length is 0
+      return hand
   
   #Get the trump winner
   getTrumpWinner: ->
@@ -68,7 +84,7 @@ class Belote extends CardGame
   
   #Return true if a card is trick
   isTrick: (card) ->
-    Card.families.getPosition(card.family) == @trick;
+    card.family == @trick;
   
   #Return the first card from the deck
   getPotentialTrick: ->
@@ -86,12 +102,12 @@ class Belote extends CardGame
   winsAgainst: (card1, card2) ->
     if !@isTrick(card1) && !@isTrick(card2)
       if card1.family == card2.family
-        @cardValue.indexOf(Card.families.indexOf(card1.value))<@cardValue.indexOf(Card.families.indexOf(card2.value))
+        @cardValue.indexOf(card1.value)<@cardValue.indexOf(card2.value)
        else  if @isTrick(card1) && !@isTrick(card2)
          false
        else  if !@isTrick(card1) && @isTrick(card2)
          true
        else  if @isTrick(card1) && @isTrick(card2)
-         @trickValue.indexOf(Card.families.indexOf(card1.value))<@trickValue.indexOf(Card.families.indexOf(card2.value))
+         @trickValue.indexOf(card1.value)<@trickValue.indexOf(card2.value)
 
 exports.Belote = Belote

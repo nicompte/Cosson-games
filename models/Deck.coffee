@@ -7,10 +7,10 @@ class Deck
     switch numberOfCards
       when 32
         for i in [0..31]
-          @deck[i] = new Card i, Math.floor(i/8), Card.families['fr'][Math.floor(i/8)], (i%8)+5, Card.values['fr'][(i%8)+5] 
+          @deck[i] = new Card  i, Math.floor(i/8), (i%8)+5 
       when 52
         for i in [0..51]
-          @deck[i] = new Card i, Card.families['fr'][Math.floor(i/13)] , Card.values['fr'][(i%13)]
+          @deck[i] = new Card  i, Math.floor(i/13), (i%13) 
   #Shuffle the deck
   shuffle: ->
     j = 0

@@ -91,7 +91,7 @@ io.sockets.on('connection', (socket) ->
     for s in io.sockets.clients()
       #Distribute the rest of the cards
       s.emit('end_of_distribution', new_cards: @belote.getPlayerById(s.handshake.session.id).hand.slice(5,7), trick: @belote.trick, trickTaker: @belote.trickTaker)
-      s.emit('can_play') if s.handshake.session.id is @belote.players[@belote.playRound].id
+      s.emit('can_play', @belote.getPlayableCardsByPlayerId(s.handshake.session.id)) if s.handshake.session.id is @belote.players[@belote.playRound].id
     return
   )
   

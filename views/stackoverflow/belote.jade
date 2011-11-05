@@ -1,6 +1,6 @@
 #belote
   div(data-bind="foreach: hand")
-    button(data-bind="click: $parent.play, enable: $parent.belote.canPlay")
+    button(data-bind="click: $parent.belote.play, enable: playable")
       span(data-bind="text: value.shortLabel")
       span(data-bind="text: family.shortLabel")
 
