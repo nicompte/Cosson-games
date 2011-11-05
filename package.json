@@ -5,11 +5,18 @@
       "name": "Nicolas Barbotte",
       "email": "nicotoutcourt@hotmail.com"
   },
+	"engines": {
+	  "node": ">=0.4.0"
+	},
   "dependencies": {
     "connect": "1.7.1",
     "express": "2.4.5",
     "socket.io": "0.8.4",
     "jade": "0.16.0",
-    "stylus": "0.16.0"
-  }
+    "stylus": "0.16.0";
+		"coffee-script": "1.1.2"
+  },
+	"scripts": { 
+		"start": "./my-custom-script" 
+	}
 }
