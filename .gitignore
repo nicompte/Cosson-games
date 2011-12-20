@@ -1,5 +1,3 @@
-*.js
-!public/scripts/libs/*.js
 lib-cov
 *.seed
 *.log
