@@ -12,5 +12,3 @@ results
 node_modules
 npm-debug.log
 .nodemonignore
-
-docs/belote.html
