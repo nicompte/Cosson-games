@@ -6,16 +6,20 @@
       "email": "nicotoutcourt@hotmail.com"
   },
 	"engines": {
-	  "node": "0.4.12"
+	  "node": "0.6.12",
+		"npm": "1.1.14"
 	},
   "dependencies": {
-    "connect": "1.7.1",
-    "express": "2.4.5",
-    "socket.io": "0.8.4",
-    "jade": "0.16.0",
-    "stylus": "0.16.0",
-		"coffee-script": "1.1.2"
+    "connect": "2.0.2",
+    "express": "2.5.8",
+    "socket.io": "0.9.1-1",
+    "jade": "0.20.3",
+    "stylus": "0.24.0"
   },
+	"devDependencies": {
+		"coffee-script": "1.1.2",
+		"nodemon": "0.6.12"
+	},
 	"scripts": { 
 		"start": "start_script" 
 	}
