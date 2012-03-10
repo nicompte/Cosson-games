@@ -11,6 +11,11 @@ sessionStore = new MemoryStore()
 controller = require "./util/controller"
 Session = require('connect').middleware.session.Session
 app = express.createServer()
+io.configure(->
+  io.set("transports", ["xhr-pooling"])
+  io.set("pooling duration", 10)
+  return
+)
 io = io.listen app
 
 Player = require("./models/Player.js").Player

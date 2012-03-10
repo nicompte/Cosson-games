@@ -11,6 +11,10 @@
   controller = require("./util/controller");
   Session = require('connect').middleware.session.Session;
   app = express.createServer();
+  io.configure(function() {
+    io.set("transports", ["xhr-pooling"]);
+    io.set("pooling duration", 10);
+  });
   io = io.listen(app);
   Player = require("./models/Player.js").Player;
   Belote = require("./models/Belote.js").Belote;
